@@ -46,3 +46,52 @@ def load_vectorstore():
     """
     embedding= OllamaEmbeddings(model="llama3")
     return FAISS.load_local(DB_DIR, embedding)
+
+def get_rag_answer(query, retriever, llm):
+    """
+        This function retrieves relevant documents from the vectorstore
+        and generates an answer using the LLM
+        Args:
+            query (str): The question to be answered.
+            retriever: The vectorstore retriever.
+            llm: The language model to generate the answer.
+    """
+    docs = retriever.get_relevant_documents(query)
+    context = "\n\n".join([doc.page_content for doc in docs])
+    logger.info(f"Retrieved {len(docs)} documents for query: {query}")
+    prompt = f"Use the following context to answer the question:\n\n{context}\n\nQuestion: {query}"
+    answer = llm.invoke(prompt)
+    return docs, answer
+
+def agent_pipeline(query):
+    """
+        This function initializes the agent pipeline with the LLM and tools
+        and decides which tool to use based on the query.
+        Args:
+            query (str): The question to be answered.
+    """
+    llm = Ollama(model="llama3")
+    retriever = load_vectorstore().as_retriever(search_kwargs={"k": 3})
+    # Initialize the agent with the LLM and tools
+    def calc_tool(q):
+        try:
+            result = eval(q.split(" ")[-1])
+            return f"The result of the calculation is: {result}"
+        except Exception as e:
+            logger.error(f"Error in calc_tool: {e}")
+            return "Error in calc_tool"
+    
+    tools =[
+        Tool(
+            name = "Calculator",
+            func=calc_tool,
+            description="A simple calculator that can perform basic arithmetic operations. Example: 2 + 2"
+        )
+    ]
+    if "calculate" in query.lower():
+        logger.info("Agent decision: Calculator Tool")
+        return "Calculator Tool", [], calc_tool(query)
+    else:
+        logger.info("Agent decision: RAG Pipeline")
+        docs, answer = get_rag_answer(query, retriever, llm)
+        return "RAG Pipeline", docs, answer
