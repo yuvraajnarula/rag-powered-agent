@@ -4,3 +4,6 @@ faiss-cpu
 streamlit
 chromadb
 tiktoken
+streamlit_lottie
+plotly
+langchain-ollama

@@ -1,7 +1,8 @@
 import os
 from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import OllamaEmbeddings
+from langchain_ollama import OllamaEmbeddings
+import langchain_ollama as Ollama
 from langchain_community.vectorstores import FAISS
 from langchain_community.llms import Ollama
 from langchain.agents import initialize_agent, Tool, AgentType
@@ -15,37 +16,56 @@ DB_DIR = "faiss_index/"
 
 def ingest_data():
     """
-        This function is designed to process text files and create 
-        a searchable vector database
+    Process text files and create a searchable FAISS vector database.
+    Cleans up resources explicitly to ensure the script exits cleanly.
     """
+
     loaders = []
     for filename in os.listdir(DATA_DIR):
         if filename.endswith(".txt"):
             file_path = os.path.join(DATA_DIR, filename)
-            loaders.append(TextLoader(file_path)) #a utility handler for reading and processing text files
+            loaders.append(TextLoader(file_path))  # Utility handler for reading text files
 
     docs = []
     for loader in loaders:
-        docs.extend(loader.load())
-        logger.info(f"Loaded {len(docs)} documents from {loader.file_path}")
-        
+        loaded_docs = loader.load()
+        docs.extend(loaded_docs)
+        logger.info(f"Loaded {len(loaded_docs)} documents from {loader.file_path}")
+
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
         chunk_overlap=200,
         length_function=len
     )
     texts = text_splitter.split_documents(docs)
+    logger.info(f"Split documents into {len(texts)} chunks.")
+
+    logger.info("Creating embeddings...")
     embedding = OllamaEmbeddings(model="llama3")
+
+    logger.info("Generating FAISS index...")
     db = FAISS.from_documents(texts, embedding)
+
+    logger.info(f"Saving FAISS index to {DB_DIR}...")
     db.save_local(DB_DIR)
+
     logger.info(f"Saved FAISS index to {DB_DIR}")
+
+    # Explicitly delete large objects to ensure clean script exit
+    del db
+    del texts
+    del docs
+    del loaders
+
+    logger.info("Ingestion complete. Resources cleaned up.")
+
 
 def load_vectorstore():
     """
         This function loads the vectorstore from the specified directory 
     """
-    embedding= OllamaEmbeddings(model="llama3")
-    return FAISS.load_local(DB_DIR, embedding)
+    embedding = OllamaEmbeddings(model="llama3")
+    return FAISS.load_local(DB_DIR, embedding, allow_dangerous_deserialization=True)
 
 def get_rag_answer(query, retriever, llm):
     """
@@ -60,8 +80,16 @@ def get_rag_answer(query, retriever, llm):
     context = "\n\n".join([doc.page_content for doc in docs])
     logger.info(f"Retrieved {len(docs)} documents for query: {query}")
     prompt = f"Use the following context to answer the question:\n\n{context}\n\nQuestion: {query}"
-    answer = llm.invoke(prompt)
-    return docs, answer
+    try:
+        logger.info("Generating answer from LLM...")
+        answer = llm.invoke(prompt)
+        if not answer:
+            logger.warning("LLM returned empty response")
+            return "I couldn't generate an answer at this time."
+        return answer
+    except Exception as e:
+        logger.error(f"Error while generating answer: {e}")
+        return f"An error occurred while generating the answer: {str(e)}"
 
 def agent_pipeline(query):
     """

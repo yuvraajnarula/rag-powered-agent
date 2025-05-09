@@ -1,0 +1,101 @@
+  Laptop Product Specification
+
+   Model: ProEdge 14
+**Series:** Professional Series
+**Release Date:** May 2025
+
+   Physical Specifications
+- **Dimensions:** 12.8" x 8.9" x 0.6" (325mm x 226mm x 15.2mm)
+- **Weight:** 3.1 lbs (1.4 kg)
+- **Chassis Material:** Aluminum alloy
+- **Color Options:** Space Gray, Silver, Midnight Blue
+
+   Display
+- **Screen Size:** 14.0" diagonal
+- **Resolution:** 2560 x 1600 (WQXGA)
+- **Panel Type:** IPS LCD
+- **Refresh Rate:** 120Hz
+- **Brightness:** 400 nits
+- **Color Gamut:** 100% sRGB, 90% DCI-P3
+- **Touch Screen:** Optional
+
+   Processor Options
+- **Base:** Intel Core i5-14500H (14 cores, 3.2GHz base, 4.8GHz boost)
+- **Recommended:** Intel Core i7-14700H (16 cores, 3.5GHz base, 5.0GHz boost)
+- **Premium:** Intel Core i9-14900H (24 cores, 3.9GHz base, 5.6GHz boost)
+
+   Memory
+- **RAM Type:** LPDDR5X-6400
+- **Base Configuration:** 16GB (soldered)
+- **Upgrade Options:** 32GB, 64GB
+
+   Storage
+- **Type:** PCIe 4.0 NVMe SSD
+- **Base Configuration:** 512GB
+- **Upgrade Options:** 1TB, 2TB, 4TB
+- **Expandability:** 1x M.2 2280 slot
+
+   Graphics
+- **Integrated:** Intel Iris Xe Graphics
+- **Discrete Option 1:** NVIDIA RTX 4060 (8GB GDDR6)
+- **Discrete Option 2:** NVIDIA RTX 4070 (12GB GDDR6)
+
+   Connectivity
+- **Wi-Fi:** Wi-Fi 6E (802.11ax)
+- **Bluetooth:** 5.3
+- **Cellular Option:** 5G Sub-6 (optional)
+
+   I/O Ports
+- 2x Thunderbolt 4 (USB-C) with Power Delivery
+- 2x USB-A 3.2 Gen 2
+- 1x HDMI 2.1
+- 1x 3.5mm Audio Combo Jack
+- 1x SD Card Reader (UHS-II)
+
+   Battery
+- **Capacity:** 72 Wh
+- **Expected Life:** Up to 14 hours web browsing
+- **Charging:** 100W USB-C PD
+- **Fast Charge:** 0-60% in 45 minutes
+
+   Audio
+- Quad speaker system (2x tweeters, 2x woofers)
+- Dual-array microphones with noise cancellation
+- 3.5mm audio jack
+- Dolby Atmos certification
+
+   Camera
+- 1080p FHD webcam
+- IR camera for facial recognition
+- Privacy shutter
+
+   Input Devices
+- Backlit keyboard with 1.5mm key travel
+- Precision touchpad (5.9" x 3.5")
+- Optional fingerprint reader
+
+   Security Features
+- TPM 2.0
+- Fingerprint reader (optional)
+- IR camera for Windows Hello
+- Kensington lock slot
+
+   Operating System
+- Windows 11 Pro
+- Linux compatibility certified
+
+   Environmental Specifications
+- **Operating Temperature:** 32°F to 95°F (0°C to 35°C)
+- **Storage Temperature:** -4°F to 113°F (-20°C to 45°C)
+- **Humidity:** 10% to 90% non-condensing
+
+   Warranty
+- 1-year limited hardware warranty
+- Optional extended warranty up to 3 years
+- Optional accidental damage protection
+
+   Regulatory Compliance
+- Energy Star 8.0
+- EPEAT Gold
+- RoHS compliant
+- FCC certified
