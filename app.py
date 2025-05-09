@@ -69,6 +69,7 @@ st.markdown("""
         background-color: #e6f7e6;
         border-radius: 8px;
         padding: 20px;
+        color : #111;
         border-left: 5px solid #28a745;
     }
     .header-container {
@@ -116,16 +117,15 @@ with st.sidebar:
     # Sample questions to help users get started
     st.subheader("Sample Questions")
     sample_questions = [
-        "What is the procedure for onboarding new employees?",
-        "Summarize the Q3 financial performance",
-        "What are the key features of our new product?",
-        "Explain our refund policy"
+        "calculate 2+5",
+        "What are whales?",
+        "How long can whales live?",
     ]
     
     for q in sample_questions:
         if st.button(q, key=f"sample_{q[:20]}"):
             st.session_state.query = q
-            st.experimental_rerun()
+            st.rerun()
 
 # Main content
 st.markdown("""
@@ -137,7 +137,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Query input with session state to remember values
 if 'query' not in st.session_state:
     st.session_state.query = ""
 
@@ -150,9 +149,8 @@ with col2:
 
 # Process query
 if query and (search_clicked or st.session_state.query == query):
-    st.session_state.query = query  # Update session state
+    st.session_state.query = query 
     
-    # Show animated loading
     with st.spinner():
         lottie_search = load_lottieurl("https://assets9.lottiefiles.com/packages/lf20_qwgbfrz1.json")
         if lottie_search:
@@ -175,22 +173,18 @@ if query and (search_clicked or st.session_state.query == query):
     with metrics_col3:
         st.metric("Tool Used", tool)
     
-    # Display answer in a nice container
     st.markdown("### 💡 Answer")
     st.markdown(f"""
     <div class="answer-container">
         {answer}
     </div>
     """, unsafe_allow_html=True)
-    
-    # Display context with more details if available
     if docs:
         with st.expander("📚 View Retrieved Context", expanded=False):
             tabs = st.tabs([f"Document {i+1}" for i in range(len(docs))])
             
             for i, (tab, doc) in enumerate(zip(tabs, docs)):
                 with tab:
-                    # Create a container for document content
                     st.markdown(f"""
                     <div class="doc-container">
                         <div class="metadata">

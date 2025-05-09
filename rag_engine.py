@@ -86,7 +86,7 @@ def get_rag_answer(query, retriever, llm):
         if not answer:
             logger.warning("LLM returned empty response")
             return "I couldn't generate an answer at this time."
-        return answer
+        return docs,answer
     except Exception as e:
         logger.error(f"Error while generating answer: {e}")
         return f"An error occurred while generating the answer: {str(e)}"
