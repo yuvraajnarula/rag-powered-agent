@@ -21,7 +21,17 @@ This tool combines document retrieval with AI to provide accurate answers from y
    ```
    mkdir -p docs faiss_index
    ```
-
+5. Run data ingestion command after adding all the txt files in `/docs` in a different terminal window
+   ```
+   python -c "import rag_engine; rag_engine.ingest_data()"
+   ```
+Now you can run CLI version or WebAPP version
+```
+py cli.py
+```
+```
+streamlit run app.py
+```
 ## Usage
 
 ### Web Interface
@@ -33,14 +43,6 @@ streamlit run app.py
 ```
 python cli.py
 ```
-
-## Adding Knowledge
-1. Add text files to the `docs/` folder
-2. Run ingestion:
-   ```python
-   from rag_engine import ingest_data
-   ingest_data()
-   ```
 
 ## Files
 - `rag_engine.py`: Core retrieval and generation logic
